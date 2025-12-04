@@ -1,0 +1,28 @@
+# ---- Build stage ----
+FROM golang:1.22 as builder
+
+WORKDIR /app
+
+# Go mod first pour le cache
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o clicker-backend main.go
+
+# ---- Run stage ----
+FROM alpine:3.19
+
+WORKDIR /app
+
+# Ajout du certificat HTTPS pour les connexions DB SSL si besoin
+RUN apk add --no-cache ca-certificates
+
+COPY --from=builder /app/clicker-backend .
+
+EXPOSE 8081
+
+ENV PORT=8081
+
+CMD ["./clicker-backend"]
