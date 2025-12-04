@@ -17,12 +17,21 @@ FROM alpine:3.19
 WORKDIR /app
 
 # Ajout du certificat HTTPS pour les connexions DB SSL si besoin
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates bash netcat-openbsd postgresql-client
 
+
+
+# Copier le binaire et le script wait-for-db
 COPY --from=builder /app/clicker-backend .
+COPY wait-for-db.sh .
 
+# Rendre le script exécutable
+RUN chmod +x wait-for-db.sh
+
+# Exposer le port
 EXPOSE 8081
-
 ENV PORT=8081
 
-CMD ["./clicker-backend"]
+# Lancer le script qui attend la DB puis le backend
+CMD ["./wait-for-db.sh", "db", "./clicker-backend"]
+
