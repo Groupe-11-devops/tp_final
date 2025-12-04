@@ -9,21 +9,20 @@ on:
 
 jobs:
   # 1) Scan de secrets avec TruffleHog
- trufflehog:
-  runs-on: ubuntu-latest
-  name: "Secret scan (TruffleHog)"
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+  trufflehog:
+    runs-on: ubuntu-latest
+    name: "Secret scan (TruffleHog)"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: TruffleHog - Secret scanning
-      uses: trufflesecurity/trufflehog@main
-      with:
-        path: .
-        extra_args: --json --fail --no-verify
-
+      - name: TruffleHog - Secret scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: .
+          extra_args: --json --fail --no-verify
 
   # 2) Build & scan des images avec Trivy
   trivy:
@@ -70,4 +69,4 @@ jobs:
       - name: Trigger Coolify deployment
         run: |
           curl --request GET "${{ secrets.COOLIFY_WEBHOOK }}" \
-               --header "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
+               --header "Authorization: Bearer ${{ secre
