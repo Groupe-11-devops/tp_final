@@ -62,9 +62,9 @@ jobs:
       
       - name: Build & Test Docker stack
         run: |
-          docker-compose up -d db
+          docker compose up -d db
           sleep 10
-          docker-compose up --build backend --abort-on-container-exit
+          docker compose up --build backend --abort-on-container-exit
 
   deploy:
     runs-on: ubuntu-latest
