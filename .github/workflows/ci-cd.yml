@@ -22,7 +22,8 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: .
-          extra_args: --json --fail --no-verify
+          extra_args: filesystem --fail
+
 
   # 2) Build & scan des images avec Trivy
   trivy:
