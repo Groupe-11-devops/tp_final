@@ -13,8 +13,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: clicker
       POSTGRES_DB: clicker
-    ports:
-      - "5432:5432"
+ 
     volumes:
       - ./database:/docker-entrypoint-initdb.d:ro
       - pgdata:/var/lib/postgresql/data  # Volume nommé = propre à chaque run
