@@ -19,8 +19,6 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: HEAD
-          head: HEAD
           extra_args: --debug --only-verified
 
       - name: Run Trivy vulnerability scanner
