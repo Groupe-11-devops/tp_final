@@ -1,35 +1,44 @@
 version: "3.9"
 
 services:
+  frontend:
+    build: ./frontend
+    container_name: game-frontend
+    ports:
+      - "3000:80"
+
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: clicker
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: clicker
       POSTGRES_DB: clicker
     ports:
       - "5432:5432"
     volumes:
-      - ./database:/docker-entrypoint-initdb.d
-      - ./db-data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data  # Volume nommé = propre à chaque run
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
-    container_name: clicker-backend
+    container_name: game-backend
     ports:
       - "8081:8081"
     depends_on:
-      - db
-    env_file:
-      - ./backend/.env
-
-  frontend:
-    build: ./frontend
-    container_name: clicker-frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
+      db:
+        condition: service_healthy  # Attend la DB saine
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: clicker
+      DB_NAME: clicker
+      PORT: 8081
 
 volumes:
-  pgdata:
+  pgdata:  # Volume Docker géré automatiquement
