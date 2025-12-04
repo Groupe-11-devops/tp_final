@@ -21,8 +21,7 @@ jobs:
       - name: TruffleHog - Secret scanning
         uses: trufflesecurity/trufflehog@main
         with:
-          path: .
-          extra_args: filesystem --fail
+          scan: git
 
 
   # 2) Build & scan des images avec Trivy
