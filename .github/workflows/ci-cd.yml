@@ -1,4 +1,4 @@
-name: CI/CD Full Scan
+name: CI/CD Full Scans
 
 on:
   push:
