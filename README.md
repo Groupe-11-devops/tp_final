@@ -1,5 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
 # Clicker Game - Projet DevOps
 
 Projet d'application web de jeu de type "clicker" avec leaderboard, achievements et gestion des scores. L'architecture comprend un frontend statique (HTML/CSS/JS servi par Nginx), un backend Go et une base PostgreSQL.[^1][^2]
